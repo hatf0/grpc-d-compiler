@@ -1,4 +1,4 @@
-module protoc_gen_d;
+module protoc_gen_grpc;
 
 import google.protobuf;
 import google.protobuf.compiler.plugin : CodeGeneratorRequest, CodeGeneratorResponse;
