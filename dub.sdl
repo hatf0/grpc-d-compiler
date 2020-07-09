@@ -1,0 +1,4 @@
+name "protoc-gen-grpc-d"
+targetType "executable"
+targetName "protoc-gen-grpc-d"
+dependency "protobuf" version="*"
