@@ -1,4 +1,4 @@
 name "protoc-gen-grpc-d"
 targetType "executable"
-targetName "protoc-gen-grpc-d"
+targetName "protoc-gen-d"
 dependency "protobuf" version="*"

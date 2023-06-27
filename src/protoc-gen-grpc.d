@@ -129,6 +129,7 @@ class CodeGenerator
         result ~= "import google.protobuf;\n";
         if(fileDescriptor.services.length != 0) {
             result ~= "import google.rpc.status;\n";
+            result ~= "import grpc.stream;\n";
         }
 
         foreach (dependency; fileDescriptor.dependencies)
@@ -163,7 +164,7 @@ class CodeGenerator
         import std.file : append;
         append("log", service.name ~ "\n");
         result ~= "\n";
-        result ~= "interface " ~ service.name ~ "\n";
+        result ~= "interface " ~ service.name ~ "(alias Reader, alias Writer)\n";
         result ~= "{\n";
 
         foreach(method; service.method) {
@@ -197,18 +198,25 @@ class CodeGenerator
             }
 
             result ~= "Status " ~ method.name ~ "(";
-            if(method.clientStreaming) {
-                result ~= "Stream!(" ~ input ~ "), ";
+            if(method.clientStreaming && !method.serverStreaming) {
+                result ~= "ref Reader!(" ~ input ~ "), ";
+                result ~= "ref " ~ output;
+            }
+            else if (method.serverStreaming && !method.clientStreaming) {
+                // result ~= "Writer)(";
+                result ~= input ~ ", ";
+                result ~= "ref Writer!(" ~ output ~ ")";
+            } 
+            else if (method.serverStreaming && method.clientStreaming) {
+                // result ~= "Reader, Writer)(";
+                result ~= "ref Reader!(" ~ input ~ "), ";
+                result ~= "ref Writer!(" ~ output ~ ")";
             }
             else {
                 result ~= input ~ ", ";
-            }
-
-            if(method.serverStreaming) {
-                result ~= "Stream!(" ~ output ~ ")";
-            } else {
                 result ~= "ref " ~ output;
             }
+
             result ~= ");\n\n";
 
         }

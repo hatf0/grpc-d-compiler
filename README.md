@@ -8,7 +8,5 @@ It is maintained as a fork of [dcarp/protobuf-d](https://github.com/dcarp/protob
 ## Usage
 This program is intended to be passed to the protoc compiler (as a plugin argument).
 
-**IMPORTANT**: You must **ALWAYS** pass `--d_opt=message-as-struct` (subject to change)
-
 Example usage:
-`protoc --plugin=/usr/bin/protoc-gen-grpcd hello_world.proto --d_opt=message-as-struct --d_out=./`
+`protoc --plugin=/usr/bin/protoc-gen-d hello_world.proto --d_opt=message-as-struct --d_out=./`
